@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const VERIFY_TOKEN = "tu_verify_token_aqui"; // Coloca tu verify_token aquí
+const VERIFY_TOKEN = "902edd8098d4abf617edb6e2a396a5e947d27bc2"; // Coloca tu verify_token aquí
 
 app.use(express.json());
 
