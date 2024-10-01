@@ -1,15 +1,13 @@
 const express = require('express');
 const app = express();
-const VERIFY_TOKEN = "902edd8098d4abf617edb6e2a396a5e947d27bc2"; // Coloca tu verify_token aquí
+const VERIFY_TOKEN = "902edd8098d4abf617edb6e2a396a5e947d27bc2";
 
 app.use(express.json());
 
-// Verifica la suscripción de Strava en la raíz (`/`) y redirige a `/webhook`
 app.get('/', (req, res) => {
     res.redirect('/webhook');
 });
 
-// Ruta para verificar la suscripción de Strava
 app.get('/webhook', (req, res) => {
     console.log('Verificando Webhook...');
     const mode = req.query['hub.mode'];
@@ -25,10 +23,9 @@ app.get('/webhook', (req, res) => {
     }
 });
 
-// Ruta para manejar las notificaciones de Strava
 app.post('/webhook', (req, res) => {
     console.log('Evento recibido:', req.body);
-    res.sendStatus(200); // Confirmar recepción de la notificación
+    res.sendStatus(200);
 });
 
 module.exports = app;
