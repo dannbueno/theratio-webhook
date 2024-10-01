@@ -1,10 +1,7 @@
 const VERIFY_TOKEN = "13f962c46ab51d30f8d71485409831ebb6d1469e";
 const bodyParser = require('body-parser');
 const express = require("express");
-const app = express();
-
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+const app = express().use(bodyParser.json());
 
 app.get("/webhook", (req, res) => {
     console.log(req.query['hub']);
@@ -17,15 +14,18 @@ app.get("/webhook", (req, res) => {
     console.log('VERIFY_TOKEN: ' + VERIFY_TOKEN);
     console.log('challenge: ' + challenge);
 
-    // Validar el token recibido con el token definido
-    if (mode === 'subscribe' && token === VERIFY_TOKEN) {
-        console.log("Webhook verified successfully");
-        res.status(200).json({ 'hub.challenge': challenge });
-    } else {
-        console.log("Verification failed");
-        res.status(403).send('Verification failed');
+    if (mode && token) {
+        // Verifies that the mode and token sent are valid
+        if (mode === 'subscribe' && token === VERIFY_TOKEN) {
+            // Responds with the challenge token from the request
+            console.log('WEBHOOK_VERIFIED');
+            res.json({ "hub.challenge": challenge });
+        } else {
+            res.sendStatus(403);
+        }
     }
 });
+
 
 app.post('/webhook', (req, res) => {
     console.log("webhook event received!", req.query, req.body);
@@ -33,7 +33,6 @@ app.post('/webhook', (req, res) => {
     if (req.body.object_type === 'activity' && req.body.aspect_type === 'create') {
         console.log("Nueva actividad creada:");
         console.log("Detalles del evento:", req.body);
-        // Aquí puedes manejar los datos de la actividad, como el `object_id` que es el ID de la actividad en Strava
     }
 
     res.status(200).send('EVENT_RECEIVED');
