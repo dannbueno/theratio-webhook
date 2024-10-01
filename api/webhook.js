@@ -3,6 +3,9 @@ const bodyParser = require('body-parser');
 const express = require("express");
 const app = express().use(bodyParser.json());
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 app.get("/webhook", (req, res) => {
     console.log(req.query['hub']);
     const mode = req.query['hub.mode'];
