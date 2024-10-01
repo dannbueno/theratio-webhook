@@ -5,6 +5,9 @@ const VERIFY_TOKEN = "902edd8098d4abf617edb6e2a396a5e947d27bc2";
 app.use(express.json());
 
 app.get('/webhook', (req, res) => {
+    console.log('Full Request Object:', req);
+    console.log('Full Query Parameters:', req.query);
+
     console.log('VERIFY_TOKEN:', VERIFY_TOKEN);
     console.log('Webhook Token:', req.query['hub.verify_token']);
     console.log('Challenge:', req.query['hub.challenge']);
